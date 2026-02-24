@@ -1,29 +1,43 @@
 from collections import defaultdict
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-from app.storage.metadata import load_clusters, load_chunks, save_clusters
+from app.storage.metadata import (
+    load_clusters,
+    load_chunks,
+    save_clusters,
+)
 
 
 def label_clusters(
-    top_k_keywords: int = 5
+    user_id: str,
+    top_k_keywords: int = 5,
 ):
     """
-    Auto-label clusters using TF-IDF keywords.
+    Auto-label clusters using TF-IDF keywords for a specific user.
     """
 
-    clusters = load_clusters()
+    if not user_id:
+        raise ValueError("user_id is required for labeling clusters")
+
+    all_clusters = load_clusters()
+    all_chunks = load_chunks()
+
+    # Filter per user
+    clusters = [c for c in all_clusters if c.get("user_id") == user_id]
+    chunks = [c for c in all_chunks if c.get("user_id") == user_id]
+
     if not clusters:
         return []
-
-    chunks = load_chunks()
 
     # Build cluster_id -> texts
     cluster_texts = defaultdict(list)
 
     for c in chunks:
         cluster_id = c.get("cluster_id")
-        if cluster_id:
-            cluster_texts[cluster_id].append(c["text"])
+        text = c.get("text")
+
+        if cluster_id and text:
+            cluster_texts[cluster_id].append(text)
 
     updated_clusters = []
 
@@ -37,11 +51,11 @@ def label_clusters(
             updated_clusters.append(cluster)
             continue
 
-        # TF-IDF
         vectorizer = TfidfVectorizer(
             stop_words="english",
-            max_features=1000
+            max_features=1000,
         )
+
         tfidf = vectorizer.fit_transform(texts)
         feature_names = vectorizer.get_feature_names_out()
 
@@ -50,7 +64,6 @@ def label_clusters(
 
         keywords = [feature_names[i] for i in top_indices]
 
-        # Simple human-readable label
         label = " / ".join(keywords[:2]).title()
 
         cluster["keywords"] = keywords
@@ -58,5 +71,13 @@ def label_clusters(
 
         updated_clusters.append(cluster)
 
-    save_clusters(updated_clusters)
+    # 🔐 Merge safely with other users
+    remaining_clusters = [
+        c for c in all_clusters if c.get("user_id") != user_id
+    ]
+
+    remaining_clusters.extend(updated_clusters)
+
+    save_clusters(remaining_clusters)
+
     return updated_clusters

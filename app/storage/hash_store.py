@@ -14,3 +14,8 @@ def hash_exists(doc_hash: str) -> bool:
 def add_hash(doc_hash: str):
     hashes.add(doc_hash)
     HASH_FILE.write_text(json.dumps(list(hashes), indent=2))
+    
+def delete_hash(doc_hash: str):
+    if doc_hash in hashes:
+        hashes.remove(doc_hash)
+        HASH_FILE.write_text(json.dumps(list(hashes), indent=2))

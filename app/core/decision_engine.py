@@ -7,17 +7,17 @@ def classify_subject(text: str) -> str:
             "artificial intelligence", "nlp", "computer vision"
         ],
         "Database": [
-            "sql", "database", "normalization", "er diagram",
+            "sql", "database", "normalization",
             "primary key", "foreign key"
         ],
-        "Finance": [
-            "invoice", "amount", "tax", "gst", "balance sheet",
-            "profit", "loss"
-        ],
         "Career": [
-            "resume", "experience", "skills", "education",
-            "project", "internship"
+            "resume", "experience", "skills",
+            "project", "education"
         ],
+        "Finance": [
+            "invoice", "tax", "gst", "amount",
+            "profit", "loss"
+        ]
     }
 
     for subject, keywords in SUBJECT_KEYWORDS.items():
