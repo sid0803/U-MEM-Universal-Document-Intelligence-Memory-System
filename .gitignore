@@ -1,22 +1,18 @@
-# Virtual environment
-venv/
-.env
+# Data folders
+app/data/
+data/
+
+# Databases
+*.db
+
+# Coverage
+.coverage
+htmlcov/
 
 # Python cache
 __pycache__/
 *.pyc
 
-# Runtime data (DO NOT COMMIT)
-data/raw_files/
-data/uploads/
-data/vectors/
-data/metadata/*.json
-
-# Vector DB files
-*.index
-vector_hashes.json
-vector_metadata.json
-
-# OS files
-.DS_Store
-Thumbs.db
+# Virtual env
+venv/
+.env
