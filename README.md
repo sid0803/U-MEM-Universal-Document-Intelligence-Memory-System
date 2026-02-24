@@ -418,14 +418,3 @@ Systems & Memory Architecture Research
 
 Project: **U-MEM**
 
----
-
-If you want next, I can:
-
-* 🔬 Convert this into a full research whitepaper (IEEE-style)
-* 📊 Create a startup pitch-ready version
-* 🧠 Add benchmarking & evaluation section
-* 🏗 Design a more formal architecture diagram description
-* 🧪 Add experimental results template
-
-Tell me which direction you want next.
