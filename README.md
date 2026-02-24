@@ -1,222 +1,360 @@
-# 🧠 U-MEM
+🧠 U-MEM (Universal Memory Engine Management):
+     A Modular Semantic Memory Architecture for Intelligent Systems
 
-## Universal Document Intelligence & Memory System (R&D)
+Abstract:
+     U-MEM is a research-oriented semantic memory architecture designed to transform unstructured documents into structured, persistent, and cluster-aware vector memory.Unlike traditional keyword search systems,      U-MEM operates on dense semantic representations and organizes knowledge at the chunk level, enabling:
 
-U-MEM is a **research-oriented document intelligence and long-term memory system** that ingests unstructured documents, converts them into semantic vector memory, clusters knowledge automatically, and enables **high-quality semantic search** across documents.
+          Meaning-based retrieval
 
-The system is designed to evolve into a **retrieval-augmented memory backbone** for intelligent agents, copilots, and AI assistants.
+          Document-level ranking
 
----
+          Structured memory mapping
 
-## 🚀 What Problem Does U-MEM Solve?
+          Extensible retrieval-augmented reasoning
 
-Traditional file systems and keyword search fail when:
+U-MEM is designed as a memory backbone for intelligent agents and AI systems.
 
-* Documents grow large and unstructured
-* Meaning matters more than exact words
-* Knowledge needs to be **remembered, grouped, and recalled**
+1. Problem Statement
+Modern document systems struggle when:
 
-U-MEM solves this by:
+          Meaning diverges from keywords
 
-* Converting documents into **semantic memory**
-* Organizing information automatically using **clustering**
-* Retrieving answers using **meaning, not keywords**
+          Documents are large and unstructured
 
----
+          Knowledge requires persistent structure
 
-## 🧩 High-Level Architecture
+          Retrieval lacks document-level aggregation
 
-![Image](https://www.researchgate.net/publication/300085761/figure/fig2/AS%3A481011596304385%401491693509241/The-Semantic-Search-architecture-and-interface.png)
+     Most systems follow:
 
-![Image](https://qdrant.tech/articles_data/what-is-a-vector-database/architecture-vector-db.png)
+          Document → Embedding → Vector Search
 
-![Image](https://images.openai.com/static-rsc-3/e29GmmkEY0cgOZsAnufxLmitXMLQ9zsYJzM69qWPdjjcbFBGxSZkzAbw8gjL97nQ27-L9POSzau1wWpQ5Qe10Uy_WNHmUYvc6cHnSDlNlgU?purpose=fullsize\&v=1)
+     But fail to model:
 
-**Architecture Layers:**
+          Chunk-level memory
 
-```
-Client / API
-     ↓
-FastAPI Layer
-     ↓
-Service Layer
-(Extraction • Chunking • Embeddings • Search • Clustering)
-     ↓
-Memory Layer
-(Vector Store + Metadata Store)
-```
+          Structured metadata relationships
 
----
+          Document-level ranking logic
 
-## 🏗️ System Components
+U-MEM addresses these architectural gaps.
 
-### 1️⃣ Document Ingestion
+2. High-Level System Architecture
+🏗 System Architecture
 
-* Supports **PDF, DOCX, PNG, TXT**
-* Extracts raw text
-* Normalizes and cleans content
+          Client
+             ↓
+          FastAPI API Layer
+             ↓
+          Service Layer
+            • Extraction
+            • Cleaning
+            • Chunking
+            • Embedding
+            • Search
+            • Clustering
+             ↓
+          Memory Layer
+            • FAISS Vector Index
+            • Metadata Store
+             ↓
+          Runtime Storage
+          Architectural Principles
+          
+Modular design:
 
-### 2️⃣ Chunking Engine
+          Clear separation of concerns
 
-* Splits documents into **semantic chunks**
-* Each chunk becomes a memory unit
+          Chunk-level memory modeling
 
-### 3️⃣ Embedding Pipeline
+          Metadata-driven aggregation
 
-* Uses sentence-level embeddings
-* Normalized vectors for cosine similarity
-* Stored in FAISS vector index
+          Extensible research-first framework
 
-### 4️⃣ Metadata Store
+3. Document Ingestion & Chunking
+Ingestion
 
-Maintains relationships:
+          Supported formats:
 
-```
-vector_id → chunk_id → document_id
-```
+          PDF
+          DOCX
+          TXT
+          PNG (OCR extensible)
 
-### 5️⃣ Semantic Search Engine
+Processing:
 
-* Query is embedded
-* Vector similarity search
-* Chunk-level scoring
-* Aggregated into **document-level ranking**
+          Text extraction
 
-### 6️⃣ Topic Clustering (HDBSCAN)
+          Cleaning & normalization
 
-* Automatically groups related chunks
-* Assigns **cluster_id** to documents
-* Enables thematic organization
+          Structured storage
 
----
+          Semantic Chunking
 
-## 🧠 Core Features Implemented
+Documents are divided into context-preserving semantic chunks.
 
-✅ File upload API
-✅ Text extraction & normalization
-✅ Chunk-level embedding storage
-✅ Vector ↔ chunk ↔ document mapping
-✅ Semantic search with ranking logic
-✅ HDBSCAN topic clustering
-✅ Cluster assignment to documents
-✅ Clean GitHub-ready architecture
+Each chunk becomes an atomic memory unit.
 
----
+Mapping:
 
-## 🛠️ Tech Stack
+          vector_id → chunk_id → document_id
 
-| Layer         | Technology               |
-| ------------- | ------------------------ |
-| Backend API   | FastAPI                  |
-| Language      | Python                   |
-| Vector Search | FAISS                    |
-| Embeddings    | Sentence Transformers    |
-| Clustering    | HDBSCAN                  |
-| Storage       | JSON-based metadata      |
-| Architecture  | Modular service-oriented |
+This ensures:
 
----
+          Fine-grained retrieval
 
-## 📂 Project Structure (Simplified)
+          Accurate document aggregation
 
-```
+          Structured memory growth
+
+4. Embedding & Vector Memory
+
+Pipeline:
+
+          Chunk → Embedding Model → Dense Vector → FAISS Index
+
+Characteristics:
+
+          Sentence-transformer embeddings
+
+          Normalized vectors
+
+          Cosine similarity
+
+          Efficient approximate nearest neighbor search
+
+          FAISS acts as the dense semantic memory index.
+
+5. Metadata Memory Layer
+🔗 Vector–Chunk–Document Mapping
+
+Structured relationships:
+
+          vector_id → chunk_id
+          chunk_id → document_id
+          document_id → cluster_id
+
+Why this matters:
+
+          Enables document-level ranking
+
+          Supports cluster-based grouping
+
+          Allows structured retrieval
+
+          Prepares system for knowledge graph integration
+
+          Metadata is stored in JSON for inspectability and research transparency.
+
+6. Semantic Retrieval Pipeline
+🔎 Retrieval Flow
+
+Retrieval process:
+
+          User Query
+             ↓
+          Query Embedding
+             ↓
+          FAISS Similarity Search
+             ↓
+          Top-k Chunk Retrieval
+             ↓
+          Chunk Scoring
+             ↓
+          Document Aggregation
+             ↓
+          Ranked Documents
+          
+Ranking Strategy:
+
+Instead of returning isolated chunks, U-MEM:
+
+          Aggregates similarity scores per document
+
+          Applies scoring heuristics
+
+          Produces stable document-level ranking
+
+          This reduces retrieval fragmentation.
+
+7. Topic Clustering (HDBSCAN)
+
+Clustering is performed over chunk embeddings to introduce thematic structure.
+
+Why HDBSCAN:
+
+          Density-aware
+
+          No fixed cluster count
+
+          Robust to noise
+
+          Suitable for high-dimensional embeddings
+
+Output:
+
+          document_id → cluster_id
+
+This transforms flat retrieval into structured semantic organization.
+
+8. Limitations
+
+While U-MEM provides a structured semantic memory framework, several limitations currently exist:
+
+     1️⃣ Scalability Constraints
+
+          FAISS index is local and not distributed.
+
+          Designed for moderate-scale corpora.
+
+          No horizontal scaling yet.
+
+     2️⃣ Static Embedding Model
+
+          Embeddings are not fine-tuned to domain-specific data.
+
+          No adaptive or reinforcement-based embedding updates.
+
+     3️⃣ No Real-Time Memory Reinforcement
+
+          Memory does not evolve based on user feedback.
+
+          No learning-based ranking optimization.
+
+     4️⃣ No Generative Layer (Yet)
+
+          System retrieves documents but does not synthesize answers.
+
+          Retrieval-Augmented Generation not yet integrated.
+
+     5️⃣ Metadata Storage Simplicity
+
+          JSON-based metadata is transparent but not optimized for large-scale systems.
+
+          Future migration to structured databases is needed.
+
+     6️⃣ No Distributed Infrastructure
+
+          Not containerized or cloud-native by default.
+
+          No object storage integration (e.g., S3).
+
+9. Future Implementations
+
+U-MEM is designed to evolve into a full memory infrastructure system.
+
+     🔹 Phase I – Retrieval Optimization
+
+          Advanced ranking heuristics
+
+          Cluster auto-label generation
+
+          Search filtering by metadata
+
+          Performance benchmarking
+
+     🔹 Phase II – Retrieval-Augmented Generation (RAG)
+
+          Context-aware answer synthesis
+
+          LLM integration
+
+          Prompt-aware memory retrieval
+
+          Multi-document reasoning
+
+     🔹 Phase III – Agent-Native Memory System
+
+          Persistent agent memory
+
+          Reinforcement-based memory scoring
+
+          Knowledge graph overlay
+
+          Memory decay & prioritization strategies
+
+     🔹 Phase IV – Production Readiness
+
+          Distributed vector database (Qdrant / Milvus)
+
+          Scalable metadata storage (PostgreSQL / Neo4j)
+
+          Cloud storage integration
+
+          Docker & container orchestration
+
+10. Computational Characteristics
+Operation	          Complexity
+Embedding	          O(n)
+Vector Insertion	O(n)
+Approximate Search	O(log n)
+Clustering	     O(n log n)
+
+Optimized for:
+
+     Research-scale experimentation
+
+     Architectural extensibility
+
+     Semantic correctness
+
+11. Project Structure
 app/
-├── api/                # FastAPI routes
-├── services/           # Core intelligence logic
-├── storage/            # Vector & metadata storage
-├── models/             # Data models
-├── core/               # Config & decision logic
-├── main.py             # App entry point
+├── api/
+├── services/
+├── storage/
+├── models/
+├── core/
+├── main.py
 
-data/
-├── metadata/           # Runtime metadata (ignored in git)
-├── raw_files/          # Uploaded documents (ignored)
-├── vectors/            # Vector index (ignored)
-```
+tests/
 
----
+data/                   # Runtime only (ignored in git)
+├── metadata/
+├── raw_files/
+├── vectors/
 
-## 🔍 Semantic Search Flow
+docs/
+└── images/
+    ├── architecture.png
+    ├── retrieval_flow.png
+    └── metadata_mapping.png
 
-![Image](https://www.researchgate.net/publication/356389086/figure/fig3/AS%3A1182277157552131%401658888248857/Flowchart-of-the-proposed-semantic-search.png)
+Runtime data is excluded from version control.
 
-![Image](https://media2.dev.to/dynamic/image/width%3D1000%2Cheight%3D420%2Cfit%3Dcover%2Cgravity%3Dauto%2Cformat%3Dauto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F9ymah9nzuldu86xzkdt5.png)
+12. Installation
+          git clone https://github.com/sid0803/U-MEM-Universal-Document-Intelligence-Memory-System.git
+          cd U-MEM-Universal-Document-Intelligence-Memory-System
+          python -m venv venv
+          venv\Scripts\activate
+          pip install -r requirements.txt
 
-```
-User Query
-   ↓
-Query Embedding
-   ↓
-Vector Similarity Search (FAISS)
-   ↓
-Chunk Matching
-   ↓
-Document Ranking
-   ↓
-Top Relevant Documents
-```
+Run:
 
----
+          uvicorn app.main:app --reload
 
-## 🧪 Current Status (R&D Phase)
+Swagger UI:
 
-* System is **functionally complete** for:
+          http://127.0.0.1:8000/docs
+          
+13. Research Orientation
 
-  * Ingestion
-  * Memory creation
-  * Search
-  * Clustering
+U-MEM is designed as:
 
-* Focused on **correctness, architecture, and extensibility**
+     Semantic retrieval research framework
 
----
+     Memory architecture experiment
 
-## 🔮 What’s Coming Next (Roadmap)
+     RAG backbone prototype
 
-### 🔥 Phase 1 (Short Term)
+     Agent memory infrastructure
 
-* Search filters (subject, cluster, type)
-* Cluster label generation (auto-topic names)
-* Improved ranking heuristics
+     It is intentionally modular and designed for iterative evolution.
 
-### 🔥 Phase 2 (Mid Term)
-
-* Retrieval-Augmented Generation (RAG)
-* Document-aware answer generation
-* Memory update & reinforcement
-
-### 🔥 Phase 3 (Long Term)
-
-* Agent memory integration
-* Cross-document reasoning
-* Persistent long-term knowledge graphs
-
----
-
-## 🎯 Why U-MEM Is Different
-
-* Not just search → **memory**
-* Not keyword-based → **semantic**
-* Not flat → **clustered intelligence**
-* Designed for **AI agents, not humans only**
-
----
-
-## 📌 Research Note
-
-U-MEM is an **experimental system** intended for:
-
-* AI memory research
-* Semantic retrieval systems
-* RAG backends
-* Intelligent assistants
-
----
-
-## 👨‍💻 Author
+14. Author
 
 Sandipan Chakraborty
-AI / ML Engineer | Systems & Memory Architect
-Project: U-MEM (R&D)
+AI / ML Engineer
+Systems & Memory Architecture Research
 
-
+Project: U-MEM
